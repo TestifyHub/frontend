@@ -8,12 +8,13 @@ import "./App.css";
 function App() {
   return (
     <Router className="flex flex-col min-h-screen overflow-hidden">
-      <Header />
-      <main>
+      {/* <Header /> */}
+      {/* <main> */}
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/features" element={<Features/>}/>
         </Routes>
-      </main>
+      {/* </main> */}
     </Router>
   );
 }
