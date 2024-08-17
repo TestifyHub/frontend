@@ -19,10 +19,10 @@ const Header = () => {
           </div>
 
           <nav className="hidden lg:flex md:flex-grow">
-            <ul className="flex flex-grow justify-end flex-wrap items-center">
+            <ul className="flex flex-grow justify-center flex-wrap items-center">
               <li>
                 <Link
-                  className="text-gray-200 hover:text-gray-100 font-semibold px-4 py-2 flex items-center transition duration-150 ease-in-out"
+                  className="text-gray-200 hover:text-gray-100 font-semibold text-lg px-4 py-2 flex items-center transition duration-150 ease-in-out"
                   to="/features"
                 >
                   Features
@@ -30,7 +30,7 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  className="text-gray-200 hover:text-gray-100 font-semibold px-4 py-2 flex items-center transition duration-150 ease-in-out"
+                  className="text-gray-200 hover:text-gray-100 font-semibold text-lg px-4 py-2 flex items-center transition duration-150 ease-in-out"
                   to="/integrations"
                 >
                   Integrations
@@ -54,7 +54,9 @@ const Header = () => {
             </ul>
           </nav>
 
-          <div className="lg:hidden"></div>
+          <div className="lg:hidden">
+            
+          </div>
         </div>
       </div>
     </header>
