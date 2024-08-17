@@ -1,0 +1,33 @@
+[
+    {
+      "id": 1,
+      "title": "Dedicated page",
+      "desc": "For each of your businesses, it will have a dedicated space page with a unique link. Your customers can directly go there to submit a text or a video testimonial."
+    },
+    {
+      "id": 2,
+      "title": "Embeddable Wall of love",
+      "desc": "It's a page to show all your selected testimonials. You can even add the whole wall to your own site with an iframe embed code."
+    },
+    {
+      "id": 3,
+      "title": "Dashboard page",
+      "desc": "You will have a dashboard page to manage all your spaces. You can add/update/remove the space as you want."
+    },
+    {
+      "id": 4,
+      "title": "Video download",
+      "desc": "You will have the access to download the video in the MP4 format with its original resolution."
+    },
+    {
+      "id": 8,
+      "title": "Custom color",
+      "desc": "You can add a custom color for buttons to make it more fit into your own brand."
+    },
+    {
+      "id": 9,
+      "title": "Dark or light theme",
+      "desc": "You can choose dark or light theme for the product page to better fit your website style."
+    }
+  ]
+  
