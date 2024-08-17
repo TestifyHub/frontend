@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 function Features() {
   return (
@@ -220,6 +220,7 @@ function Features() {
     </div>
     </div>
   )
+
 }
 
-export default Features
+export default Features;
