@@ -9,11 +9,13 @@ function App() {
   return (
     <Router className="flex flex-col min-h-screen overflow-hidden">
       <Header />
-      <main>
+      
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/integrations" element={<Integrations />} />
         </Routes>
-      </main>
+      
     </Router>
   );
 }
