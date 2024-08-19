@@ -53,6 +53,8 @@ const Header = () => {
                 <Link
                   className="text-gray-200 hover:text-gray-100 font-semibold text-lg px-4 py-2 flex items-center transition duration-150 ease-in-out"
                   to="/features"
+                  smooth={true}
+                  duration={2000}
                 >
                   Features
                 </Link>
@@ -61,6 +63,8 @@ const Header = () => {
                 <Link
                   className="text-gray-200 hover:text-gray-100 font-semibold text-lg px-4 py-2 flex items-center transition duration-150 ease-in-out"
                   to="/integrations"
+                  smooth={true}
+                  duration={200}
                 >
                   Integrations
                 </Link>
