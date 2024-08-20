@@ -8,6 +8,7 @@ import Integrations from "./pages/Integrations";
 import "./App.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import SignUp from "./pages/SignUp";
 
 function App() {
   useEffect(() => {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/features" element={<Features />} />
             <Route path="/integrations" element={<Integrations />} />
+            <Route path="/signup" element={<SignUp />} />
           </Routes>
         </main>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
