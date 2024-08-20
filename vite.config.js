@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/integrations": {
+      "/getintegrations": {
         target: "http://localhost:5000", // Your backend server URL
         changeOrigin: true,
         rewrite: (path) => path, // No path rewrite needed
