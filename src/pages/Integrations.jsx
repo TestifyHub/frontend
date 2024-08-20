@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import GetStarted from "../components/GetStarted";
+import "aos/dist/aos.css"; // Import AOS styles
+import AOS from "aos";
 
 const filters = [
   "All", // Add "All" as an option
@@ -21,6 +23,8 @@ function Integrations() {
   const [filter, setFilter] = useState("All");
 
   useEffect(() => {
+    AOS.init({ duration: 1000, once: true }); // Initialize AOS with a duration of 1 second
+
     const fetchData = async () => {
       let url = "/getintegrations";
       if (filter !== "All") {
@@ -92,10 +96,10 @@ function Integrations() {
                   {filters.map((x) => (
                     <li
                       key={x}
-                      className={`border-l-4 py-2 cursor-pointer ${
+                      className={`border-l-4 py-2 cursor-pointer transition-all duration-300 ${
                         filter === x
                           ? "bg-purple-100 dark:bg-gray-700 text-gray-700 dark:text-gray-100 border-purple-600 rounded-r-md"
-                          : "border-transparent text-gray-600 dark:text-gray-200"
+                          : "border-transparent text-gray-600 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800"
                       }`}
                       onClick={() => setFilter(x)}
                     >
@@ -119,10 +123,11 @@ function Integrations() {
                     return (
                       <div
                         key={data.name}
-                        className="sm:rounded-tr-lg relative group dark:bg-gray-800 p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 shadow-sm border border-gray-100 dark:border-gray-700 rounded-xl hover:shadow-md"
+                        className="sm:rounded-tr-lg relative group dark:bg-gray-800 p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 shadow-sm border border-gray-100 dark:border-gray-700 rounded-xl hover:shadow-md transition-transform duration-300 hover:scale-105"
+                        data-aos="fade-up"
                       >
                         <div>
-                          <span className="rounded-full inline-flex ring-2 ring-white dark:ring-gray-200">
+                          <span className="rounded-full inline-flex ring-2 ring-white dark:ring-gray-200 transition-transform duration-300 group-hover:scale-110">
                             <img
                               loading="lazy"
                               src={path}
