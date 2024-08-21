@@ -9,6 +9,7 @@ import "./App.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
 
 function App() {
   useEffect(() => {
@@ -19,22 +20,21 @@ function App() {
   }, []);
 
   return (
-    
-      <div className="flex flex-col min-h-screen overflow-hidden">
-        <Header />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/features" element={<Features />} />
-            <Route path="/integrations" element={<Integrations />} />
-            <Route path="/signup" element={<SignUp />} />
-          </Routes>
-        </main>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <Footer />
-        </div>
+    <div className="flex flex-col min-h-screen overflow-hidden">
+      <Header />
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/integrations" element={<Integrations />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+        </Routes>
+      </main>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <Footer />
       </div>
-    
+    </div>
   );
 }
 

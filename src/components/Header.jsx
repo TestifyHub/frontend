@@ -76,12 +76,12 @@ const Header = () => {
                   className="text-gray-200 px-4 py-3 font-semibold flex items-center transition duration-150 ease-in-out"
                   to="/signin"
                 >
-                  Sign in
+                  Sign In
                 </Link>
               </li>
               <li>
                 <div className="btn-sm text-white font-semibold bg-purple-600 hover:bg-purple-700 ml-3">
-                  <Link to="/signup">Sign up</Link>
+                  <Link to="/signup">Sign Up</Link>
                 </div>
               </li>
             </ul>
@@ -139,7 +139,15 @@ const Header = () => {
                     className="flex text-gray-200 hover:text-gray-100 py-2"
                     to="/signin"
                   >
-                    Sign in
+                    Sign In
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="flex text-gray-200 hover:text-gray-100 py-2"
+                    to="/signup"
+                  >
+                    Sign Up
                   </Link>
                 </li>
               </ul>
