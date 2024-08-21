@@ -1,8 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 import google from "../assets/images/google.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast, Bounce } from "react-toastify";
 
 function SignIn() {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Get the input values
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value.trim();
+
+    // Check if input fields are empty
+    if (!email || !password) {
+      toast("😕 Sorry bad email or password.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+      return; // Exit the function early to prevent further execution
+    }
+
+    setLoading(true); // Set loading to true when form is submitted
+
+    try {
+      const response = await fetch("/api/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Navigate to dashboard or another route
+        navigate("/dashboard"); // Use navigate for routing
+      } else {
+        // Show error message
+        toast.error(data.message || "Bad email or password");
+      }
+    } catch (error) {
+      // Show error notification
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false); // Set loading to false once the request is completed
+    }
+  };
+
   return (
     <main className="flex-grow">
       <div className="relative max-w-6xl mx-auto h-0 pointer-events-none"></div>
@@ -10,7 +63,7 @@ function SignIn() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="pt-32 pb-12 md:pt-40 md:pb-20">
             <div className="max-w-sm mx-auto text-center pb-12 md:pb-20">
-              <h2 className="mt-6 text-3xl font-extrabold">Welcome back 👋</h2>
+              <h2 className="mt-6 text-3xl font-bold">Welcome back 👋</h2>
             </div>
             <div className="max-w-md mx-auto bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
               <div>
@@ -38,7 +91,7 @@ function SignIn() {
                 <div className="border-t border-gray-500 dark:border-gray-300 border-dotted flex-grow ml-3"></div>
               </div>
 
-              <form method="post">
+              <form onSubmit={handleSubmit} noValidate="novalidate">
                 <div className="flex flex-wrap -mx-3 mb-4">
                   <div className="w-full px-3">
                     <label
@@ -90,10 +143,27 @@ function SignIn() {
                 <div className="flex flex-wrap -mx-3 mt-6">
                   <div className="w-full px-3">
                     <button
-                      className="btn text-white bg-purple-600 hover:bg-purple-700 w-full"
+                      className={`btn text-white bg-purple-600 hover:bg-purple-700 w-full relative ${
+                        loading ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
                       type="submit"
+                      disabled={loading}
                     >
-                      Sign in
+                      {loading ? (
+                        <span className="flex justify-center items-center">
+                          <svg
+                            className="animate-spin h-5 w-5 mr-3"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                          >
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M12 4V1l-4 4 4 4V6c4.418 0 8 3.582 8 8h-3a5.978 5.978 0 0 0-2-4.745V12h-4v6h5.586l1.707-1.707A8.013 8.013 0 0 0 20 12h2c0-5.522-4.478-10-10-10z" />
+                          </svg>
+                          Signing in...
+                        </span>
+                      ) : (
+                        "Sign in"
+                      )}
                     </button>
                   </div>
                 </div>

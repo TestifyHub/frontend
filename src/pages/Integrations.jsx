@@ -26,9 +26,9 @@ function Integrations() {
     AOS.init({ duration: 1000, once: true }); // Initialize AOS with a duration of 1 second
 
     const fetchData = async () => {
-      let url = "/getintegrations";
+      let url = "/api/integrations";
       if (filter !== "All") {
-        url = `/getintegrations/${filter}`;
+        url = `/api/integrations/${filter}`;
       }
       try {
         const response = await fetch(url);
