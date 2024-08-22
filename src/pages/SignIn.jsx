@@ -1,20 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import google from "../assets/images/google.png";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, Bounce } from "react-toastify";
 
 function SignIn() {
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [googleLoading, setGoogleLoading] = useState(false);
   const navigate = useNavigate();
+
+  const handleGoogleLogin = () => {
+    setGoogleLoading(true);
+    window.location.href = "/auth/google";
+  };
+
+  const handleGoogleCallback = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+      console.log("inside if token");
+      localStorage.setItem("jwt", token);
+      console.log("before toast msg");
+      toast.success("🎉 Signed in with Google!");
+      navigate("/dashboard");
+    }
+  };
+
+  useEffect(() => {
+    handleGoogleCallback();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Get the input values
-    const email = e.target.email.value.trim();
-    const password = e.target.password.value.trim();
-
-    // Check if input fields are empty
     if (!email || !password) {
       toast("😕 Sorry bad email or password.", {
         position: "top-right",
@@ -30,7 +50,7 @@ function SignIn() {
       return; // Exit the function early to prevent further execution
     }
 
-    setLoading(true); // Set loading to true when form is submitted
+    setLoading(true);
 
     try {
       const response = await fetch("/api/signin", {
@@ -42,17 +62,17 @@ function SignIn() {
       const data = await response.json();
 
       if (response.ok) {
-        // Navigate to dashboard or another route
-        navigate("/dashboard"); // Use navigate for routing
+        setLoading(false);
+        localStorage.setItem("jwt", data.token);
+        toast.success("🎉 Signed in!");
+        navigate("/dashboard");
       } else {
-        // Show error message
-        toast.error(data.message || "Bad email or password");
+        toast(data.message || "Bad email or password");
       }
     } catch (error) {
-      // Show error notification
       toast.error("An error occurred. Please try again.");
     } finally {
-      setLoading(false); // Set loading to false once the request is completed
+      setLoading(false);
     }
   };
 
@@ -69,15 +89,38 @@ function SignIn() {
               <div>
                 <div className="flex flex-wrap -mx-3">
                   <div className="w-full px-3">
-                    <button className="btn px-0 text-white bg-gray-50 hover:bg-gray-100 w-full relative flex items-center border border-gray-300">
-                      <img
-                        src={google}
-                        className="mx-4 h-5 w-5 object-contain"
-                      ></img>
-                      <span className="h-6 flex items-center border-r border-gray-300 mr-4"></span>
-                      <span className="flex-auto pl-16 pr-8 -ml-16 text-gray-600">
-                        Sign in with Google
-                      </span>
+                    <button
+                      className={`btn px-0 text-white bg-gray-50 hover:bg-gray-100 w-full relative flex items-center border border-gray-300 ${
+                        googleLoading ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                      onClick={handleGoogleLogin}
+                      disabled={googleLoading}
+                    >
+                      {googleLoading ? (
+                        <span className="flex justify-center items-center">
+                          <svg
+                            className="animate-spin h-5 w-5 mr-3"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                          >
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M12 4V1l-4 4 4 4V6c4.418 0 8 3.582 8 8h-3a5.978 5.978 0 0 0-2-4.745V12h-4v6h5.586l1.707-1.707A8.013 8.013 0 0 0 20 12h2c0-5.522-4.478-10-10-10z" />
+                          </svg>
+                          Signing in with Google...
+                        </span>
+                      ) : (
+                        <>
+                          <img
+                            src={google}
+                            className="mx-4 h-5 w-5 object-contain"
+                            alt="Google"
+                          />
+                          <span className="h-6 flex items-center border-r border-gray-300 mr-4"></span>
+                          <span className="flex-auto pl-16 pr-8 -ml-16 text-gray-600">
+                            Sign in with Google
+                          </span>
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>
@@ -91,7 +134,11 @@ function SignIn() {
                 <div className="border-t border-gray-500 dark:border-gray-300 border-dotted flex-grow ml-3"></div>
               </div>
 
-              <form onSubmit={handleSubmit} noValidate="novalidate">
+              <form
+                onSubmit={handleSubmit}
+                noValidate="novalidate"
+                method="post"
+              >
                 <div className="flex flex-wrap -mx-3 mb-4">
                   <div className="w-full px-3">
                     <label
@@ -107,6 +154,7 @@ function SignIn() {
                       className="form-input w-full text-gray-600 dark:text-gray-800"
                       placeholder="Your email"
                       required
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                 </div>
@@ -125,6 +173,7 @@ function SignIn() {
                       className="form-input w-full text-gray-600 dark:text-gray-800"
                       placeholder="Password"
                       required
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
                 </div>
@@ -162,20 +211,20 @@ function SignIn() {
                           Signing in...
                         </span>
                       ) : (
-                        "Sign in"
+                        "Sign In"
                       )}
                     </button>
                   </div>
                 </div>
               </form>
 
-              <div className="text-gray-600 dark:text-gray-400 text-center mt-4 text-sm">
+              <div className="text-gray-600 dark:text-gray-400 text-center mt-6">
                 Don't have an account?{" "}
                 <Link
-                  className="text-purple-600 hover:text-gray-600 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                   to="/signup"
+                  className="text-purple-600 hover:text-purple-700 transition duration-150 ease-in-out"
                 >
-                  Sign up
+                  Sign Up
                 </Link>
               </div>
             </div>

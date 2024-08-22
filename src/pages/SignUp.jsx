@@ -1,57 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, Bounce } from "react-toastify";
 import i1 from "../assets/images/google.png";
 
 function SignUp() {
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const name = e.target.name.value.trim();
-    const email = e.target.email.value.trim();
-    const password = e.target.password.value.trim();
-
-    if (!name || !email || !password) {
-      if (!name) {
-        toast("😕 Name is required.", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          transition: Bounce,
-        });
-      } else if (!email) {
-        toast("😕 Email is required.", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          transition: Bounce,
-        });
-      } else if (!password) {
-        toast("😕 Password is required.", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          transition: Bounce,
-        });
-      }
+    if (!fullName || !email || !password) {
+      toast("😕 All fields are required.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
       return;
     }
 
@@ -61,16 +35,18 @@ function SignUp() {
       const response = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ fullName, email, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        navigate("/signin");
+        localStorage.setItem("jwt", data.token); // Store JWT token
         toast.success("🎉 Account created successfully!");
+        navigate("/dashboard"); // Redirect to dashboard
       } else {
-        toast.error(data.message || "Failed to create account.");
+        console.log(data);
+        toast(data.message || "Failed to create account.");
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
@@ -78,6 +54,24 @@ function SignUp() {
       setLoading(false);
     }
   };
+
+  const handleGoogle = () => {
+    setGoogleLoading(true);
+    window.location.href = "/auth/google"; // Redirect to Google OAuth
+  };
+  const handleGoogleCallback = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+      localStorage.setItem("jwt", token); // Store JWT token
+      navigate("/dashboard"); // Redirect to dashboard
+    }
+  };
+
+  useEffect(() => {
+    handleGoogleCallback();
+  }, []);
 
   return (
     <main className="flex-grow">
@@ -92,19 +86,39 @@ function SignUp() {
               <div>
                 <div className="flex flex-wrap -mx-3 mt-6">
                   <div className="w-full px-3">
-                    <button className="btn px-0 text-white bg-gray-50 hover:bg-gray-100 w-full relative flex items-center border border-gray-300">
-                      <img
-                        className="mx-4 h-5 w-5 object-contain"
-                        src={i1}
-                        alt="Google logo"
-                      />
-                      <span
-                        className="h-6 flex items-center border-r border-gray-300 mr-4"
-                        aria-hidden="true"
-                      ></span>
-                      <span className="flex-auto pl-16 pr-8 -ml-16 text-gray-600">
-                        Sign up with Google
-                      </span>
+                    <button
+                      onClick={handleGoogle}
+                      className="btn px-0 text-white bg-gray-50 hover:bg-gray-100 w-full relative flex items-center border border-gray-300"
+                      disabled={googleLoading}
+                    >
+                      {googleLoading ? (
+                        <span className="flex justify-center items-center w-full">
+                          <svg
+                            className="animate-spin h-5 w-5 mr-3"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                          >
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M12 4V1l-4 4 4 4V6c4.418 0 8 3.582 8 8h-3a5.978 5.978 0 0 0-2-4.745V12h-4v6h5.586l1.707-1.707A8.013 8.013 0 0 0 20 12h2c0-5.522-4.478-10-10-10z" />
+                          </svg>
+                          Redirecting...
+                        </span>
+                      ) : (
+                        <>
+                          <img
+                            className="mx-4 h-5 w-5 object-contain"
+                            src={i1}
+                            alt="Google logo"
+                          />
+                          <span
+                            className="h-6 flex items-center border-r border-gray-300 mr-4"
+                            aria-hidden="true"
+                          ></span>
+                          <span className="flex-auto pl-16 pr-8 -ml-16 text-gray-600">
+                            Sign up with Google
+                          </span>
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>
@@ -133,13 +147,15 @@ function SignUp() {
                   <div className="w-full px-3">
                     <label
                       className="block text-gray-500 dark:text-gray-300 text-sm font-medium mb-1"
-                      htmlFor="name"
+                      htmlFor="fullName"
                     >
                       First name <span className="text-red-600">*</span>
                     </label>
                     <input
-                      name="name"
+                      name="fullName"
                       type="text"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
                       className="form-input w-full text-gray-600 dark:text-gray-800"
                       placeholder="Your first name"
                       required
@@ -158,6 +174,8 @@ function SignUp() {
                     <input
                       name="email"
                       type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       className="form-input w-full text-gray-600 dark:text-gray-800"
                       placeholder="you@example.com"
                       required
@@ -176,6 +194,8 @@ function SignUp() {
                     <input
                       name="password"
                       type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       className="form-input w-full text-gray-600 dark:text-gray-800"
                       placeholder="Password"
                       required
@@ -215,7 +235,7 @@ function SignUp() {
               <div className="text-gray-600 dark:text-gray-400 text-center mt-4 text-sm">
                 Already have an account?{" "}
                 <Link
-                  className="text-purple-600 hover:text-gray-600 dark:hover:text-gray-200 transition duration-150 ease-in-out"
+                  className="text-purple-600 hover:text-gray-600 dark:hover:text-gray-200"
                   to="/signin"
                 >
                   Sign in
