@@ -13,6 +13,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   useEffect(() => {
@@ -46,6 +47,7 @@ function App() {
             <Route path="/integrations" element={<Integrations />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </main>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
