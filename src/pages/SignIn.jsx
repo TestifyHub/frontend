@@ -20,23 +20,28 @@ function SignIn() {
     const token = urlParams.get("token");
 
     if (token) {
-      console.log("inside if token");
       localStorage.setItem("jwt", token);
-      console.log("before toast msg");
-      toast.success("🎉 Signed in with Google!");
-      navigate("/dashboard");
+      toast.success("🎉 Signed in with Google!", {
+        autoClose: 200,
+        onClose: () => {
+          navigate("/dashboard");
+        },
+      });
     }
   };
 
   useEffect(() => {
-    handleGoogleCallback();
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("token")) {
+      handleGoogleCallback();
+    }
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
-      toast("😕 Sorry bad email or password.", {
+      toast("😕 Sorry, bad email or password.", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -62,12 +67,13 @@ function SignIn() {
       const data = await response.json();
 
       if (response.ok) {
-        setLoading(false);
         localStorage.setItem("jwt", data.token);
-        toast.success("🎉 Signed in!");
-        navigate("/dashboard");
+        toast.success("🎉 Signed in!", {
+          autoClose: 200,
+          onClose: () => navigate("/dashboard"),
+        });
       } else {
-        toast(data.message || "Bad email or password");
+        toast.error(data.message || "Bad email or password");
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");

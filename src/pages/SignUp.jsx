@@ -41,9 +41,11 @@ function SignUp() {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("jwt", data.token); // Store JWT token
-        toast.success("🎉 Account created successfully!");
-        navigate("/dashboard"); // Redirect to dashboard
+        localStorage.setItem("jwt", data.token);
+        toast.success("🎉 Signed up successfully!", {
+          autoClose: 200,
+          onClose: () => navigate("/dashboard"),
+        });
       } else {
         console.log(data);
         toast(data.message || "Failed to create account.");
@@ -57,15 +59,20 @@ function SignUp() {
 
   const handleGoogle = () => {
     setGoogleLoading(true);
-    window.location.href = "/auth/google"; // Redirect to Google OAuth
+    window.location.href = "/auth/google";
   };
   const handleGoogleCallback = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get("token");
 
     if (token) {
-      localStorage.setItem("jwt", token); // Store JWT token
-      navigate("/dashboard"); // Redirect to dashboard
+      localStorage.setItem("jwt", token);
+      toast.success("🎉 Signed in with Google!", {
+        autoClose: 200,
+        onClose: () => {
+          navigate("/dashboard");
+        },
+      });
     }
   };
 
