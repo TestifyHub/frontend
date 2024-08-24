@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Toast.css";
 import "./App.css";
-
 
 import Header from "./components/Header";
 import LoHeader from "./components/LoHeader";
@@ -19,10 +18,13 @@ import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Spaces from "./components/Spaces";
+import NewSpace from "./pages/NewSpace";
+
 
 function App() {
   const navigate = useNavigate();
   const [auth, setAuth] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     AOS.init({
@@ -49,11 +51,9 @@ function App() {
             setAuth(true);
           } else {
             setAuth(false);
-           
           }
         } catch (error) {
           setAuth(false);
-         
         }
       } else {
         setAuth(false);
@@ -64,24 +64,32 @@ function App() {
   }, [navigate]);
 
   return (
-    
-      <>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-          transition={Bounce}
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Bounce}
+      />
+      <Routes>
+        <Route
+          path="/newspace"
+          element={
+            <ProtectedRoute>
+              <NewSpace />
+            </ProtectedRoute>
+          }
         />
-        
+      </Routes>
+      {location.pathname !== "/newspace" && (
         <div className="flex flex-col min-h-screen overflow-hidden">
-          
           {auth ? <LoHeader /> : <Header />}
           <main className="flex-grow">
             <Routes>
@@ -111,8 +119,8 @@ function App() {
             <Footer />
           </div>
         </div>
-      </>
-    
+      )}
+    </>
   );
 }
 
