@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Toast.css";
@@ -8,6 +8,7 @@ import "./App.css";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import Header from "./components/Header";
+import LoHeader from "./components/LoHeader";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Features from "./pages/Features";
@@ -20,6 +21,9 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
+  const navigate = useNavigate();
+  const [auth, setAuth] = useState(false);
+
   useEffect(() => {
     AOS.init({
       duration: 600,
@@ -27,8 +31,40 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem("jwt");
+      if (token) {
+        try {
+          const response = await fetch("/api/verify-token", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const data = await response.json();
+
+          if (response.ok && data.valid) {
+            setAuth(true);
+          } else {
+            setAuth(false);
+           
+          }
+        } catch (error) {
+          setAuth(false);
+         
+        }
+      } else {
+        setAuth(false);
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
+
   return (
-    <Router>
+    
       <>
         <ToastContainer
           position="top-right"
@@ -41,10 +77,12 @@ function App() {
           draggable
           pauseOnHover
           theme="dark"
-          transition:Bounce
+          transition={Bounce}
         />
+        
         <div className="flex flex-col min-h-screen overflow-hidden">
-          <Header />
+          
+          {auth ? <LoHeader /> : <Header />}
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
@@ -67,7 +105,7 @@ function App() {
           </div>
         </div>
       </>
-    </Router>
+    
   );
 }
 
