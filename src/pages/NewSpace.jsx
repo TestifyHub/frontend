@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import defaultImg from "/android-chrome-512x512.png";
+import { toast, Bounce } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function NewSpace() {
   const initialQuestions = [
@@ -9,23 +11,52 @@ function NewSpace() {
     { id: "3", text: "" },
   ];
 
+  const navigate = useNavigate();
   const [questions, setQuestions] = useState(initialQuestions);
+  const [userId, setUserId] = useState(null);
+  const [imgPreview, setImgPreview] = useState(defaultImg);
 
   const [data, setData] = useState({
     spaceName: "",
-    image: defaultImg,
+    image: null,
     header: "Your Header Title",
     message: "Custom message",
     questions: initialQuestions,
-    color: "5D5DFF",
+    color: "#5D5DFF",
   });
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const token = localStorage.getItem("jwt");
+        const response = await fetch("/api/verify-token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const result = await response.json();
+        if (result.valid) {
+          setUserId(result.userId);
+        } else {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Error verifying token:", error);
+      }
+    };
+
+    fetchUserId();
+  }, [navigate]);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      setData({ ...data, image: file });
       const reader = new FileReader();
       reader.onloadend = () => {
-        setData({ ...data, image: reader.result });
+        setImgPreview(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -58,8 +89,52 @@ function NewSpace() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("spaceName", data.spaceName);
+    formData.append("header", data.header);
+    formData.append("message", data.message);
+    formData.append("questions", JSON.stringify(questions));
+    formData.append("color", data.color);
+    formData.append("image", data.image);
+    formData.append("userId", userId);
+
+    try {
+      const response = await fetch("/api/newspace", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success) {
+          toast.success("Space created!", {
+            autoClose: 200,
+            onClose: () => navigate("/dashboard"),
+          });
+        } else {
+          toast.warn("Failed to create space!", {
+            autoClose: 200,
+            onClose: () => navigate("/dashboard"),
+          });
+        }
+      } else {
+        toast.warn("Failed to create space!", {
+          autoClose: 200,
+          onClose: () => navigate("/dashboard"),
+        });
+      }
+    } catch (error) {
+      toast.error("Invalid session", {
+        autoClose: 200,
+        onClose: () => {
+          localStorage.removeItem("jwt");
+          navigate("/sign");
+        },
+      });
+    }
   };
 
   return (
@@ -116,7 +191,7 @@ function NewSpace() {
                                   <img
                                     loading="lazy"
                                     className="rounded-md"
-                                    src={data.image}
+                                    src={imgPreview}
                                     style={{ maxWidth: "100px" }}
                                   />
                                 </div>
@@ -247,9 +322,9 @@ function NewSpace() {
                               </label>
                               <div className="mt-2 flex items-center">
                                 <span className="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                                  {data.image && (
+                                  {imgPreview && (
                                     <img
-                                      src={data.image}
+                                      src={imgPreview}
                                       alt="Uploaded"
                                       className="w-full h-full object-cover"
                                     />
@@ -465,8 +540,9 @@ function NewSpace() {
                           <div className="flex flex-wrap -mx-3 mt-6">
                             <div className="w-full px-3">
                               <button
-                                className="btn text-white bg-purple-600 hover:bg-purple-700 w-full"
+                                className="btn text-white hover:bg-purple-700 w-full"
                                 type="submit"
+                                style={{ backgroundColor: data.color }}
                               >
                                 Create new Space
                               </button>

@@ -17,7 +17,6 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import InputForm from "./pages/InputForm";
 import NewSpace from "./pages/NewSpace";
 
 function App() {
