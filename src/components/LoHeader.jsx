@@ -6,22 +6,23 @@ function LoHeader() {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  
-
   const handleLogout = () => {
     localStorage.removeItem("jwt");
-    navigate("/signin"); 
+    navigate("/signin");
   };
 
   const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen); 
+    setDropdownOpen(!dropdownOpen);
   };
 
- 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest("#dropdown-button") && !event.target.closest("#dropdown-menu") &&
-          !event.target.closest("#dropdown-button-mobile") && !event.target.closest("#dropdown-menu-mobile")) {
+      if (
+        !event.target.closest("#dropdown-button") &&
+        !event.target.closest("#dropdown-menu") &&
+        !event.target.closest("#dropdown-button-mobile") &&
+        !event.target.closest("#dropdown-menu-mobile")
+      ) {
         setDropdownOpen(false);
       }
     };
@@ -34,7 +35,7 @@ function LoHeader() {
 
   return (
     <div>
-      <header className="absolute w-full z-30">
+      <header className="absolute w-full z-30 px-10">
         <div className="container mx-auto">
           <div className="flex items-center justify-between h-20">
             <div className="flex-shrink-0 mr-4">
