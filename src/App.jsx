@@ -5,7 +5,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "./Toast.css";
 import "./App.css";
 
-import { BrowserRouter as Router } from "react-router-dom";
 
 import Header from "./components/Header";
 import LoHeader from "./components/LoHeader";
@@ -19,6 +18,7 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Spaces from "./components/Spaces";
 
 function App() {
   const navigate = useNavigate();
@@ -98,6 +98,13 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+              path="/spaces"
+              element={
+                <ProtectedRoute>
+                  <Spaces/>
+                </ProtectedRoute>
+              }/>
             </Routes>
           </main>
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
