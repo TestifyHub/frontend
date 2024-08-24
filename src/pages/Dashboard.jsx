@@ -1,42 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import i1 from "../assets/images/dashboard.png";
-import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem("jwt");
-      if (token) {
-        try {
-          const response = await fetch("/api/verify-token", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          const data = await response.json();
-
-          if (!response.ok || !data.valid) {
-            console.log("invalid token");
-            localStorage.removeItem("jwt");
-            navigate("/signin");
-          }
-        } catch (error) {
-          localStorage.removeItem("jwt");
-          navigate("/signin");
-        }
-      } else {
-        console.log("no token");
-        navigate("/signin");
-      }
-    };
-
-    checkAuth();
-  }, []);
-
   return (
     <div>
       <section className="relative dashboard-spaces mt-7">
