@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import defaultImg from "/android-chrome-512x512.png";
 
 function NewSpace() {
   const initialQuestions = [
@@ -13,9 +14,11 @@ function NewSpace() {
 
   const [data, setData] = useState({
     spaceName: "",
-    image: null,
-    header: "",
+    image: defaultImg,
+    header: "Your Header Title",
+    message: "Custom message",
     questions: initialQuestions,
+    color: "5D5DFF",
   });
 
   const handleImageChange = (event) => {
@@ -49,8 +52,19 @@ function NewSpace() {
     setQuestions((prevQuestions) => prevQuestions.filter((q) => q.id !== id));
   };
 
+  const handleColorChange = (e) => {
+    const value = e.target.value;
+    if (/^[0-9A-F]{6}$/i.test(value)) {
+      setData({ ...data, color: `#${value}` });
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
-    <div className="flex flex-col min-h-screen overflow-y-scroll bg-gray-900">
+    <div className="flex flex-col min-h-screen overflow-y-scroll bg-gray-50">
       <div className="fixed z-40 inset-0 overflow-y-scroll">
         <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 bg-dashboard">
           <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
@@ -86,9 +100,109 @@ function NewSpace() {
 
               <div className="md:grid md:grid-cols-5 md:gap-6">
                 {/* Left side */}
-                <div className="md:col-span-2 py-6 md:py-12"></div>
+                <div className="md:col-span-2 py-6 md:py-12 ">
+                  <div className="flex flex-col rounded-lg border border-gray-200 false">
+                    <div className="flex flex-col ">
+                      <main className="flex-grow">
+                        <section className="relative overflow-visible">
+                          <div className="absolute top-0 left-0 ml-6 -mt-4 z-50">
+                            <div className="relative inline-flex text-sm font-semibold py-1 px-3 mt-px text-green-600 bg-green-200 rounded-full">
+                              Live preview
+                            </div>
+                          </div>
+                          <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
+                            <div className="py-12">
+                              <div className="max-w-3xl mx-auto text-center pb-6">
+                                <div className="relative inline-flex flex-col justify-center mb-4">
+                                  <img
+                                    loading="lazy"
+                                    className="rounded-md"
+                                    src={data.image}
+                                    style={{ maxWidth: "100px" }}
+                                  />
+                                </div>
+                                <h3 className="h3 mb-4 text-gray-600">
+                                  {data.header}
+                                </h3>
+                                <div className="custom-message text-base text-gray-500">
+                                  <p>{data.message}</p>
+                                </div>
+                                <div className="w-full px-4 py-4 text-left mx-auto overflow-hidden">
+                                  <h3 className="text-lg leading-6 font-semibold text-gray-600 uppercase mb-2">
+                                    Questions
+                                  </h3>
+                                  <div
+                                    className="w-10 mb-2 border-b-4"
+                                    style={{ borderColor: data.color }}
+                                  ></div>
+                                  <ul className="mt-2 max-w-xl text-base list-disc pl-4 text-gray-500">
+                                    {questions.map((question) => (
+                                      <li key={question.id} className="mb-2">
+                                        {question.text}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </div>
+                              {/* Upload buttons */}
+                              <div className="mt-6">
+                                <div>
+                                  <button
+                                    className="btn text-white text-sm mb-2 w-full px-4 py-2"
+                                    style={{
+                                      backgroundColor: data.color,
+                                    }}
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-5 w-5 mr-3"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                      />
+                                    </svg>
+                                    Record a video
+                                  </button>
+                                </div>
+                                <div>
+                                  <button className="btn text-white text-sm bg-gray-700 w-full px-4 py-2">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-5 w-5 mr-3"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                                      />
+                                    </svg>
+                                    Send in text
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </section>
+                      </main>
+                    </div>
+                  </div>
+                </div>
                 {/* Right side */}
-                <div className="mt-5 md:mt-0 md:col-span-3">
+                <form
+                  className="mt-5 md:mt-0 md:col-span-3"
+                  method="post"
+                  onSubmit={handleSubmit}
+                >
                   <section className="relative">
                     <div className="w-full mx-auto px-4 sm:px-6 relative">
                       <div className="py-12">
@@ -272,13 +386,98 @@ function NewSpace() {
                                 Custom color
                                 <span className="text-red-600">*</span>
                               </label>
+                              <div className="flex flex-wrap gap-1 justify-center items-center">
+                                <div
+                                  className="rounded-lg h-8 w-8 bg-orange-500"
+                                  onClick={() => {
+                                    setData({ ...data, color: "#f97316" });
+                                  }}
+                                ></div>
+                                <div
+                                  className="rounded-lg h-8 w-8 bg-yellow-500"
+                                  onClick={() => {
+                                    setData({ ...data, color: "#eab308" });
+                                  }}
+                                ></div>
+                                <div
+                                  className="rounded-lg h-8 w-8 bg-emerald-400"
+                                  onClick={() => {
+                                    setData({ ...data, color: "#34d399" });
+                                  }}
+                                ></div>
+                                <div
+                                  className="rounded-lg h-8 w-8 bg-green-500"
+                                  onClick={() => {
+                                    setData({ ...data, color: "#22c55e" });
+                                  }}
+                                ></div>
+                                <div
+                                  className="rounded-lg h-8 w-8 bg-sky-300"
+                                  onClick={() => {
+                                    setData({ ...data, color: "#7dd3fc" });
+                                  }}
+                                ></div>
+                                <div
+                                  className="rounded-lg h-8 w-8 bg-blue-500"
+                                  onClick={() => {
+                                    setData({ ...data, color: "#3b82f6" });
+                                  }}
+                                ></div>
+                                <div
+                                  className="rounded-lg h-8 w-8 bg-gray-400"
+                                  onClick={() => {
+                                    setData({ ...data, color: "#9ca3af" });
+                                  }}
+                                ></div>
+                                <div
+                                  className="rounded-lg h-8 w-8 bg-red-500"
+                                  onClick={() => {
+                                    setData({ ...data, color: "#ef4444" });
+                                  }}
+                                ></div>
+                                <div
+                                  className="rounded-lg h-8 w-8 bg-pink-400"
+                                  onClick={() => {
+                                    setData({ ...data, color: "#f472b6" });
+                                  }}
+                                ></div>
+                                <div
+                                  className="rounded-lg h-8 w-8 bg-purple-600"
+                                  onClick={() => {
+                                    setData({ ...data, color: "#5D5DFF" });
+                                  }}
+                                ></div>
+                                <div className="relative">
+                                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 pointer-events-none">
+                                    #
+                                  </span>
+                                  <input
+                                    type="text"
+                                    name="color"
+                                    className="pl-7 shadow-sm focus:ring-gray-300 focus:border-gray-300 sm:text-sm border-gray-300 rounded-md text-gray-700"
+                                    placeholder="FFFFFF"
+                                    onChange={handleColorChange}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-wrap -mx-3 mt-6">
+                            <div className="w-full px-3">
+                              <button
+                                className="btn text-white bg-purple-600 hover:bg-purple-700 w-full"
+                                type="submit"
+                              >
+                                Create new Space
+                              </button>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </section>
-                </div>
+                </form>
               </div>
             </div>
           </div>

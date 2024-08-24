@@ -32,7 +32,7 @@ const Header = () => {
     : "hamburger false";
 
   return (
-    <header className="absolute w-full z-30">
+    <header className="absolute w-full z-30 px-10">
       <div className="container mx-auto">
         <div className="flex items-center justify-between h-20">
           <div className="flex-shrink-0 mr-4">
