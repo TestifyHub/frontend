@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import i1 from "../assets/images/dashboard.png";
 
 function Dashboard() {
@@ -11,10 +12,9 @@ function Dashboard() {
               <h3 className="h3 font-semibold tracking-wide">Spaces</h3>
               <div className="relative inline-block text-left">
                 <div className="relative flex-shrink-0 pl-4 ml-4">
-                  <button
-                    className="create-new-space-btn btn-sm text-white bg-purple-600 hover:bg-purple-700 font-semibold"
-                    id="headlessui-menu-button-25"
-                    type="button"
+                  <Link
+                    to="/newspace"
+                    className="create-new-space-btn btn-sm text-white bg-purple-600 hover:bg-purple-700 font-semibold inline-flex items-center px-4 py-2 rounded"
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
@@ -35,7 +35,7 @@ function Dashboard() {
                       </svg>
                       Create a new space
                     </span>
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
