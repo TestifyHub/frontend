@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import defaultImg from "/android-chrome-512x512.png";
 import { toast, Bounce } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import SuccessComponent from "../components/SuccessComponent";
 
 function NewSpace() {
   const initialQuestions = [
@@ -15,10 +16,13 @@ function NewSpace() {
   const [questions, setQuestions] = useState(initialQuestions);
   const [userId, setUserId] = useState(null);
   const [imgPreview, setImgPreview] = useState(defaultImg);
+  const [loading, setLoading] = useState(false);
+  const [created, setCreated] = useState(false);
+  const [spaceId, setSpaceId] = useState(null);
 
   const [data, setData] = useState({
     spaceName: "",
-    image: null,
+    image: defaultImg,
     header: "Your Header Title",
     message: "Custom message",
     questions: initialQuestions,
@@ -91,7 +95,22 @@ function NewSpace() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
+    if (!data.spaceName) {
+      toast("😕 All fields are required.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+      setLoading(false);
+      return;
+    }
     const formData = new FormData();
     formData.append("spaceName", data.spaceName);
     formData.append("header", data.header);
@@ -112,7 +131,10 @@ function NewSpace() {
         if (result.success) {
           toast.success("Space created!", {
             autoClose: 200,
-            onClose: () => navigate("/dashboard"),
+            onClose: () => {
+              setSpaceId(result.space._id);
+              setCreated(true);
+            },
           });
         } else {
           toast.warn("Failed to create space!", {
@@ -134,10 +156,14 @@ function NewSpace() {
           navigate("/sign");
         },
       });
+    } finally {
+      setLoading(false);
     }
   };
 
-  return (
+  return created ? (
+    <SuccessComponent spaceName={data.spaceName} spaceId={spaceId} />
+  ) : (
     <div className="flex flex-col min-h-screen overflow-y-scroll bg-gray-50">
       <div className="fixed z-40 inset-0 overflow-y-scroll">
         <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 bg-dashboard">
@@ -241,7 +267,7 @@ function NewSpace() {
                                         d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
                                       />
                                     </svg>
-                                    Record a video
+                                    Upload a video
                                   </button>
                                 </div>
                                 <div>
@@ -541,10 +567,37 @@ function NewSpace() {
                             <div className="w-full px-3">
                               <button
                                 className="btn text-white hover:bg-purple-700 w-full"
+                                disabled={loading}
                                 type="submit"
                                 style={{ backgroundColor: data.color }}
                               >
-                                Create new Space
+                                {loading ? (
+                                  <>
+                                    <svg
+                                      className="animate-spin h-5 w-5 mr-3 text-white"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <circle
+                                        className="opacity-25"
+                                        cx="12"
+                                        cy="12"
+                                        r="10"
+                                        stroke="currentColor"
+                                        strokeWidth="4"
+                                      ></circle>
+                                      <path
+                                        className="opacity-75"
+                                        fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                                      ></path>
+                                    </svg>
+                                    <span>Creating...</span>
+                                  </>
+                                ) : (
+                                  "Create new Space"
+                                )}
                               </button>
                             </div>
                           </div>
