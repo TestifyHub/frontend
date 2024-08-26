@@ -1,9 +1,5 @@
-useEffect dashboard
-dashboard -> /space/id
 
-useEffect get all reviews
 
-/submitreview/spaceid -> generate form: video upload, text, rating
 /submitreview/id -> backend post review
 
 reviews Schema
@@ -26,3 +22,4 @@ Signout
 
 Home page
 
+ 
