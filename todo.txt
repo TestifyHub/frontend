@@ -1,0 +1,28 @@
+useEffect dashboard
+dashboard -> /space/id
+
+useEffect get all reviews
+
+/submitreview/spaceid -> generate form: video upload, text, rating
+/submitreview/id -> backend post review
+
+reviews Schema
+
+like button: reviewsliked: boolean default: false
+type: video, text
+
+video, all, text, liked
+
+wall of love: generate javascript
+
+Forgot password
+
+edit 
+
+dashboard
+// Profile
+Signout
+
+
+Home page
+
