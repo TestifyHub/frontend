@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import logo from "../assets/blackLogo.svg";
+import TextReviewForm from "../components/TextReviewForm";
 
 function SubmitReview() {
   const { spaceId } = useParams();
   const [data, setData] = useState(null);
+  const [selectText, setSelectText] = useState(false);
+  const [selectVideo, setSelectVideo] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -33,6 +37,10 @@ function SubmitReview() {
   }, []);
   return (
     <div className="flex flex-col min-h-screen overflow-hidden bg-white">
+      {selectText && (
+        <TextReviewForm space={data} setSelectText={setSelectText} />
+      )}
+
       <header className="absolute w-full z-30 ">
         <div className="container mx-auto">
           <div className="flex items-center justify-between h-20">
@@ -107,7 +115,12 @@ function SubmitReview() {
                       </button>
                     </div>
                     <div>
-                      <button className="btn text-white bg-gray-700 hover:bg-gray-800 w-full sm:w-auto sm:ml-4">
+                      <button
+                        className="btn text-white bg-gray-700 hover:bg-gray-800 w-full sm:w-auto sm:ml-4"
+                        onClick={() => {
+                          setSelectText(true);
+                        }}
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-5 w-5 mr-3"

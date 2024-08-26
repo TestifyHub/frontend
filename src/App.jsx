@@ -90,8 +90,10 @@ function App() {
         />
         <Route path="/submitreview/:spaceId" element={<SubmitReview />} />
       </Routes>
-      {!(location.pathname == "/newspace" ||
-        location.pathname.startsWith("/submitreview/")) && (
+      {!(
+        location.pathname == "/newspace" ||
+        location.pathname.startsWith("/submitreview")
+      ) && (
         <div className="flex flex-col min-h-screen overflow-hidden">
           {auth ? <LoHeader /> : <Header />}
           <main className="flex-grow">
