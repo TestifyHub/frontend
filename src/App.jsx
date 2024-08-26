@@ -19,6 +19,7 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Spaces from "./components/Spaces";
 import NewSpace from "./pages/NewSpace";
+import HomePage from "./pages/HomePage";
 
 
 function App() {
@@ -106,6 +107,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+            <Route path='/home' element={<HomePage/>}/>
               <Route
               path="/spaces"
               element={
