@@ -16,7 +16,7 @@ function SuccessComponent({ spaceId, spaceName }) {
               <p className="text-sm font-medium text-gray-600 break-words mt-2">
                 Here is the link for your customers:
                 <div>
-                  <p className="text-sm font-medium text-purple-600 break-words cursor-pointer">{`http://localhost:5173/space/${spaceId}`}</p>
+                  <p className="text-sm font-medium text-purple-600 break-words cursor-pointer">{`http://localhost:5173/submitreview/${spaceId}`}</p>
                 </div>
               </p>
             </div>

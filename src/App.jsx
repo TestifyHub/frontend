@@ -20,7 +20,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Spaces from "./components/Spaces";
 import NewSpace from "./pages/NewSpace";
 import HomePage from "./pages/HomePage";
-
+import SubmitReview from "./pages/SubmitReview";
 
 function App() {
   const navigate = useNavigate();
@@ -88,8 +88,12 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/submitreview/:spaceId" element={<SubmitReview />} />
       </Routes>
-      {location.pathname !== "/newspace" && (
+      {!(
+        location.pathname == "/newspace" ||
+        location.pathname.startsWith("/submitreview")
+      ) && (
         <div className="flex flex-col min-h-screen overflow-hidden">
           {auth ? <LoHeader /> : <Header />}
           <main className="flex-grow">
@@ -97,6 +101,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/features" element={<Features />} />
               <Route path="/integrations" element={<Integrations />} />
+
               <Route path="/signup" element={<SignUp />} />
               <Route path="/signin" element={<SignIn />} />
               <Route
@@ -107,14 +112,15 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-            <Route path='/home' element={<HomePage/>}/>
+              <Route path="/home" element={<HomePage />} />
               <Route
-              path="/spaces"
-              element={
-                <ProtectedRoute>
-                  <Spaces/>
-                </ProtectedRoute>
-              }/>
+                path="/spaces"
+                element={
+                  <ProtectedRoute>
+                    <Spaces />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </main>
           <div className="max-w-7xl mx-auto px-4 sm:px-6">

@@ -1,5 +1,4 @@
 import React,{useState} from "react";
-// import social from '../assets/images/spaces/social.svg'
 
 function Spaces() {
 
