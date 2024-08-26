@@ -1,35 +1,21 @@
 import React, { useState } from "react";
+import ReactPlayer from "react-player";
 import { toast, Bounce } from "react-toastify";
-import user from "/user.png";
 
-function TextReviewForm({ space, setSelectText }) {
-  const [rating, setRating] = useState(0);
-  const [hover, setHover] = useState(0);
-  const [message, setMessage] = useState("");
-  const [isTouched, setIsTouched] = useState(false);
+function VideoReviewForm({ space, setSelectVideo }) {
+  const [video, setVideo] = useState(null);
+  const [videoPreview, setVideoPreview] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [imagePreview, setImagePreview] = useState(user);
-  const [pfpPic, setPfpPic] = useState(user);
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleMessageChange = (event) => {
-    setMessage(event.target.value);
-  };
-
-  const handleBlur = () => {
-    setIsTouched(true);
-  };
-
-  const handlePfpImgChange = (event) => {
+  const handleFileChange = (event) => {
     const file = event.target.files[0];
-    if (file) {
-      setPfpPic(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+    if (file && file.type.startsWith("video")) {
+      setVideo(file);
+      setVideoPreview(URL.createObjectURL(file));
     }
   };
 
@@ -38,8 +24,6 @@ function TextReviewForm({ space, setSelectText }) {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
     if (!isChecked) {
       toast("😕 Permission required to continue.", {
         position: "top-right",
@@ -57,14 +41,14 @@ function TextReviewForm({ space, setSelectText }) {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
-    formData.append("text", message);
     formData.append("rating", rating);
     formData.append("spaceId", space._id);
-    formData.append("image", pfpPic);
-    formData.append("type", "text");
+    formData.append("video", video);
+    formData.append("type", "video");
 
     try {
-      const response = await fetch("/api/submit-text-review", {
+        console.log('inside try');
+      const response = await fetch("/api/submit-video-review", {
         method: "POST",
         body: formData,
       });
@@ -73,7 +57,7 @@ function TextReviewForm({ space, setSelectText }) {
         toast.success("🎉 Review submitted successfully.", {
           autoClose: 200,
           onClose: () => {
-            setSelectText(false);
+            setSelectVideo(false);
           },
         });
       } else {
@@ -99,7 +83,7 @@ function TextReviewForm({ space, setSelectText }) {
           <form method="post">
             <button
               onClick={() => {
-                setSelectText(false);
+                setSelectVideo(false);
               }}
               className="text-gray-400 rounded-full w-6 h-6"
               style={{
@@ -127,36 +111,49 @@ function TextReviewForm({ space, setSelectText }) {
             </button>
             <div className="sm:flex sm:items-start">
               <div className="mt-3 w-full text-left sm:mt-0">
-                <h3 className="text-lg leading-6 font-semibold text-gray-800">
-                  Write text review
-                </h3>
-                <div className="mt-6 flex items-center">
-                  <div className="flex-shrink-0">
-                    <div>
-                      <img
-                        src={space.image}
-                        alt="space logo"
-                        className="h-10 rounded-md shadow-md"
-                        loading="lazy"
+                <div className="mx-auto flex items-center">
+                  <div>
+                    <svg
+                      className="h-6 w-6 text-purple-600"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
                       />
-                    </div>
+                    </svg>
                   </div>
+
+                  <span className="ml-5 rounded-md">
+                    <input
+                      type="file"
+                      accept="video/*"
+                      name="videoFile"
+                      id="videoFile"
+                      className="hidden"
+                      onChange={handleFileChange}
+                    />
+                    <label
+                      htmlFor="videoFile"
+                      className="py-2 px-3 border border-gray-300 rounded-md text-sm leading-4 font-medium text-gray-600 hover:text-gray-800 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out cursor-pointer"
+                    >
+                      Choose video
+                    </label>
+                  </span>
                 </div>
-                <div className="mt-6">
-                  <h3 className="text-lg leading-6 font-semibold text-gray-800 capitalize mb-2">
-                    Questions
-                  </h3>
-                  <div
-                    className="w-10 mb-2 border-b-4"
-                    style={{ borderColor: "rgb(93, 93, 255)" }}
-                  ></div>
-                  <ul className="mt-2 max-w-xl text-sm text-gray-500 list-disc pl-4">
-                    {space.questions.map((question) => {
-                      return <li key={question.id}>{question.text}</li>;
-                    })}
-                  </ul>
-                </div>
+
                 <div className="mt-4">
+                  {videoPreview && (
+                    <video width="100%" controls>
+                      <source src={video} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  )}
                   <div className="flex flex-wrap -mx-3">
                     <div className="w-full px-3">
                       <div className="star-ratings" title={`${rating} Stars`}>
@@ -205,27 +202,6 @@ function TextReviewForm({ space, setSelectText }) {
                       </div>
                     </div>
                   </div>
-                  <div className="mt-3">
-                    <div className="rounded-md w-full">
-                      <textarea
-                        required
-                        minLength={30}
-                        id="message"
-                        name="message"
-                        rows="5"
-                        placeholder=""
-                        className="shadow-sm flex-1 form-input block w-full min-w-0 rounded-md text-gray-800 transition duration-150 ease-in-out sm:text-sm sm:leading-5 border-gray-300"
-                        value={message}
-                        onChange={handleMessageChange}
-                        onBlur={handleBlur}
-                      />
-                      {isTouched && message.length < 30 && (
-                        <p className="text-red-600 text-sm mt-1">
-                          Message must be at least 30 characters long.
-                        </p>
-                      )}
-                    </div>
-                  </div>
                   <div className="mt-2 rounded-md shadow-sm w-full">
                     <div className="mt-1 relative rounded-md">
                       <label htmlFor="name" className="text-sm text-gray-700">
@@ -264,46 +240,6 @@ function TextReviewForm({ space, setSelectText }) {
                       />
                     </div>
                   </div>
-                  <div className="mt-2 flex flex-wrap -mx-3 mb-4">
-                    <div className="w-full px-3">
-                      <label
-                        className="text-sm text-gray-700"
-                        htmlFor="newAvatarURL"
-                      >
-                        Upload Your Photo
-                      </label>
-                      <div className="mt-2 flex items-center">
-                        {/* Image preview */}
-                        <span
-                          className={`rounded-full h-20 w-20 bg-gray-300 ${
-                            imagePreview ? "bg-cover bg-center" : ""
-                          }`}
-                          style={
-                            imagePreview
-                              ? { backgroundImage: `url(${imagePreview})` }
-                              : {}
-                          }
-                        ></span>
-                        <span className="ml-5 rounded-md">
-                          <input
-                            type="file"
-                            accept="image/*"
-                            name="newAvatarURL"
-                            id="newAvatarURL"
-                            className="newAvatarFile hidden"
-                            onChange={handlePfpImgChange}
-                          />
-                          <label
-                            htmlFor="newAvatarURL"
-                            className="py-2 px-3 border border-gray-300 rounded-md text-sm leading-4 font-medium text-gray-600 hover:text-gray-800 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out cursor-pointer"
-                          >
-                            Choose file
-                          </label>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
                   <div className="mt-2 rounded-md w-full consent-text">
                     <div
                       className="mt-1 relative flex rounded-md items-start overflow-auto"
@@ -331,6 +267,7 @@ function TextReviewForm({ space, setSelectText }) {
                 </div>
               </div>
             </div>
+
             <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
               <button
                 type="submit"
@@ -343,7 +280,7 @@ function TextReviewForm({ space, setSelectText }) {
                 type="button"
                 className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-200 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
                 onClick={() => {
-                  setSelectText(false);
+                  setSelectVideo(false);
                 }}
               >
                 Cancel
@@ -356,4 +293,4 @@ function TextReviewForm({ space, setSelectText }) {
   );
 }
 
-export default TextReviewForm;
+export default VideoReviewForm;

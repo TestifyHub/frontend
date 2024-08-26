@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast, Bounce } from "react-toastify";
 import logo from "../assets/blackLogo.svg";
 import TextReviewForm from "../components/TextReviewForm";
+import VideoReviewForm from "../components/VideoReviewForm";
 
 function SubmitReview() {
   const { spaceId } = useParams();
@@ -24,6 +25,7 @@ function SubmitReview() {
         });
         const result = await response.json();
         if (result.found) {
+          console.log(result.space);
           setData(result.space);
         } else {
           toast.error("Invalid Review Link");
@@ -40,7 +42,9 @@ function SubmitReview() {
       {selectText && (
         <TextReviewForm space={data} setSelectText={setSelectText} />
       )}
-
+      {selectVideo && (
+        <VideoReviewForm space={data} setSelectVideo={setSelectVideo} />
+      )}
       <header className="absolute w-full z-30 ">
         <div className="container mx-auto">
           <div className="flex items-center justify-between h-20">
@@ -76,13 +80,13 @@ function SubmitReview() {
                   <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-gray-700">
                     {data.header}
                   </h1>
-                  <p className="text-base md:text-xl text-gray-500 ">
+                  <div className="text-base md:text-xl text-gray-500 ">
                     <span>
                       <div className="custom-message">
                         <p>{data.message}</p>
                       </div>
                     </span>
-                  </p>
+                  </div>
                   <div className="w-full md:w-3/4 px-4 py-4 text-left mx-auto">
                     <h3 className="text-lg leading-6 font-semibold text-gray-700 uppercase mb-2">
                       Questions
@@ -93,7 +97,7 @@ function SubmitReview() {
                     ></div>
                     <ul className="mt-2 max-w-xl text-base list-disc pl-4 text-gray-500">
                       {data.questions.map((question) => {
-                        return <li key={question}>{question.text}</li>;
+                        return <li key={question.id}>{question.text}</li>;
                       })}
                     </ul>
                   </div>
@@ -102,7 +106,12 @@ function SubmitReview() {
                 <div className="mt-2 md:mt-6">
                   <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center">
                     <div>
-                      <button className="btn text-white bg-purple-600 hover:bg-purple-700 w-full mb-4 sm:w-auto sm:mb-0">
+                      <button
+                        className="btn text-white bg-purple-600 hover:bg-purple-700 w-full mb-4 sm:w-auto sm:mb-0"
+                        onClick={() => {
+                          setSelectVideo(true);
+                        }}
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-5 w-5 mr-3"

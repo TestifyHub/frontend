@@ -1,12 +1,4 @@
 
-
-/submitreview/id -> backend post review
-
-reviews Schema
-
-like button: reviewsliked: boolean default: false
-type: video, text
-
 video, all, text, liked
 
 wall of love: generate javascript
