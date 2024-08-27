@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReactPlayer from "react-player";
 import { toast, Bounce } from "react-toastify";
+import Loading from "./Loading";
 
 function VideoReviewForm({ space, setSelectVideo }) {
   const [video, setVideo] = useState(null);
@@ -10,6 +11,7 @@ function VideoReviewForm({ space, setSelectVideo }) {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -24,6 +26,7 @@ function VideoReviewForm({ space, setSelectVideo }) {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     if (!isChecked) {
       toast("😕 Permission required to continue.", {
         position: "top-right",
@@ -36,6 +39,7 @@ function VideoReviewForm({ space, setSelectVideo }) {
         theme: "dark",
         transition: Bounce,
       });
+      setLoading(false);
       return;
     }
     const formData = new FormData();
@@ -47,7 +51,7 @@ function VideoReviewForm({ space, setSelectVideo }) {
     formData.append("type", "video");
 
     try {
-        console.log('inside try');
+      console.log("inside try");
       const response = await fetch("/api/submit-video-review", {
         method: "POST",
         body: formData,
@@ -57,6 +61,7 @@ function VideoReviewForm({ space, setSelectVideo }) {
         toast.success("🎉 Review submitted successfully.", {
           autoClose: 200,
           onClose: () => {
+            setLoading(false);
             setSelectVideo(false);
           },
         });
@@ -65,8 +70,14 @@ function VideoReviewForm({ space, setSelectVideo }) {
       }
     } catch (error) {
       toast.error("Something went wrong. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div
       className="fixed z-50 inset-0 overflow-y-auto"

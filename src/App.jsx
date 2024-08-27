@@ -17,10 +17,11 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Spaces from "./components/Spaces";
 import NewSpace from "./pages/NewSpace";
 import HomePage from "./pages/HomePage";
 import SubmitReview from "./pages/SubmitReview";
+import Loading from "./components/Loading";
+import MySpace from "./components/MySpace";
 
 function App() {
   const navigate = useNavigate();
@@ -89,10 +90,12 @@ function App() {
           }
         />
         <Route path="/submitreview/:spaceId" element={<SubmitReview />} />
+        <Route path="/loading" element={<Loading />} />
       </Routes>
       {!(
         location.pathname == "/newspace" ||
-        location.pathname.startsWith("/submitreview")
+        location.pathname.startsWith("/submitreview") ||
+        location.pathname == "/loading"
       ) && (
         <div className="flex flex-col min-h-screen overflow-hidden">
           {auth ? <LoHeader /> : <Header />}
@@ -114,10 +117,10 @@ function App() {
               />
               <Route path="/home" element={<HomePage />} />
               <Route
-                path="/spaces"
+                path="/myspace"
                 element={
                   <ProtectedRoute>
-                    <Spaces />
+                    <MySpace />
                   </ProtectedRoute>
                 }
               />
