@@ -117,7 +117,14 @@ function NewSpace() {
     formData.append("message", data.message);
     formData.append("questions", JSON.stringify(questions));
     formData.append("color", data.color);
-    formData.append("image", data.image);
+    if (data.image === defaultImg) {
+      const response = await fetch(defaultImg);
+      const blob = await response.blob();
+      const file = new File([blob], "defaultImg.png", { type: blob.type });
+      formData.append("image", file);
+    } else {
+      formData.append("image", data.image);
+    }
     formData.append("userId", userId);
 
     try {

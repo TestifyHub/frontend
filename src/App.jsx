@@ -117,7 +117,7 @@ function App() {
               />
               <Route path="/home" element={<HomePage />} />
               <Route
-                path="/myspace"
+                path="/space:id"
                 element={
                   <ProtectedRoute>
                     <MySpace />

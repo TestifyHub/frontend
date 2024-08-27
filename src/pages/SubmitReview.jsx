@@ -93,7 +93,7 @@ function SubmitReview() {
                     </h3>
                     <div
                       className="w-10 mb-2 border-b-4"
-                      style={{ borderColor: "rgb(93,93,255)" }}
+                      style={{ borderColor: data.color }}
                     ></div>
                     <ul className="mt-2 max-w-xl text-base list-disc pl-4 text-gray-500">
                       {data.questions.map((question) => {
@@ -107,7 +107,8 @@ function SubmitReview() {
                   <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center">
                     <div>
                       <button
-                        className="btn text-white bg-purple-600 hover:bg-purple-700 w-full mb-4 sm:w-auto sm:mb-0"
+                        className="btn text-white w-full mb-4 sm:w-auto sm:mb-0"
+                        style={{ backgroundColor: data.color }}
                         onClick={() => {
                           setSelectVideo(true);
                         }}
