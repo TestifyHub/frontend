@@ -1,8 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import i1 from "../assets/images/dashboard.png";
+import SpaceComponent from "../components/SpaceComponent";
 
 function Dashboard() {
+  const [spaces,setSpaces] = useState([])
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const token = localStorage.getItem("jwt");
+        const response = await fetch("/api/getallspaces", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId:"66ca180f56822498b6fcdcf0"
+          }),
+        });
+        const result = await response.json();
+        // console.log(result)
+        if (result) {
+          // console.log(result)
+          setSpaces(result)
+        } else {
+          console.log("No spaces yet");
+        }
+      } catch (error) {
+        console.error("Error verifying token:", error);
+      }
+    };
+
+    fetchUserId();
+  },[]);
+
   return (
     <div>
       <section className="relative dashboard-spaces mt-7">
@@ -39,7 +71,10 @@ function Dashboard() {
                 </div>
               </div>
             </div>
+            {spaces.length==0 ? 
+            (
             <div className="overflow-hidden mx-auto">
+
               <img
                 loading="lazy"
                 className="w-48 h-48 my-5 mx-auto rounded-lg"
@@ -47,9 +82,15 @@ function Dashboard() {
                 alt="success"
               />
               <p className="max-w-xl mt-5 mx-auto text-center text-lg leading-7 text-gray-400">
-                No space yet, add a new one?
+                No spaces yet, Create a new one
               </p>
-            </div>
+            </div>):
+            (
+              <ul className="mt-6 grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {spaces.map((x)=>{
+                  return <SpaceComponent data={x} />
+                })}
+            </ul>)}
           </div>
         </div>
       </section>
