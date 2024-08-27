@@ -1,43 +1,64 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import all from "../assets/images/spaces/all.svg";
+import video from "../assets/images/spaces/video.svg";
+import Text from "../assets/images/spaces/Text.svg";
+import liked from "../assets/images/spaces/Liked.svg";
 
 function MySpace({ spaceId, spaceName }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+  const [isHighlightTooltipVisible, setIsHighlightTooltipVisible] =
+    useState(false);
+
+  const toggleOptions = () => setIsOptionsOpen(!isOptionsOpen);
+  const toggleTooltip = () => setIsTooltipVisible(!isTooltipVisible);
+  const toggleHighlightTooltip = () =>
+    setIsHighlightTooltipVisible(!isHighlightTooltipVisible);
 
   useEffect(() => {
     const fetchReviews = async () => {
       let api = "";
       switch (filter) {
         case "video":
-          api = `/api/reviews/${spaceId}/video`;
+          api = `/api/reviews/66ca131e5c15781e571adbde/video`;
           break;
         case "text":
-          api = `/api/reviews/${spaceId}/text`;
+          api = `/api/reviews/66ca131e5c15781e571adbde/text`;
           break;
         case "liked":
-          api = `/api/reviews/${spaceId}/liked`;
+          api = `/api/reviews/66ca131e5c15781e571adbde/liked`;
           break;
         default:
-          api = `/api/reviews/${spaceId}`;
+          api = `/api/reviews/66ca131e5c15781e571adbde`;
       }
-      const response = await fetch(api);
-
-      if (response.ok) {
-        const data = await response.json();
-        setReviews(data.reviews);
+      try {
+        const response = await fetch(api);
+        if (response.ok) {
+          const data = await response.json();
+          setReviews(data.reviews);
+        } else {
+          toast.error("Failed to fetch reviews.");
+        }
+      } catch (error) {
+        toast.error("An error occurred while fetching reviews.");
       }
     };
 
     fetchReviews();
-  }, []);
+  }, [filter]);
 
   const handleLike = async (reviewId) => {
     try {
-      const response = await fetch(`/api/reviews/${reviewId}/like`, {
-        method: "POST",
-      });
+      const response = await fetch(
+        `/api/reviews/66ca131e5c15781e571adbde/like`,
+        {
+          method: "POST",
+        }
+      );
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -77,7 +98,8 @@ function MySpace({ spaceId, spaceName }) {
                           id="headlessui-menu-button-33"
                           type="button"
                           aria-haspopup="true"
-                          aria-expanded="false"
+                          aria-expanded={isModalOpen}
+                          onClick={handleToggle}
                         >
                           <span className="sr-only">Open options</span>
                         </button>
@@ -91,6 +113,7 @@ function MySpace({ spaceId, spaceName }) {
                         <a
                           href={`http://localhost:5173/submitreview/${spaceId}`}
                           target="_blank"
+                          rel="noopener noreferrer" // Added rel for security
                           className="underline break-words"
                         >
                           {`http://localhost:5173/submitreview/${spaceId}`}
@@ -183,7 +206,7 @@ function MySpace({ spaceId, spaceName }) {
                                         className="w-full flex-shrink-0 border-none my-auto rounded-lg"
                                         src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/assets%2Fanimated-demo.gif?alt=media&amp;token=08b0e0d6-5290-4441-a309-942e074c7b77"
                                         alt="auto scrolling masonry grid"
-                                      ></img>
+                                      />
 
                                       <h3 className="my-3 text-gray-900 text-base font-semibold">
                                         Masonry - animated
@@ -246,76 +269,20 @@ function MySpace({ spaceId, spaceName }) {
                     className="w-full mt-1 group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-800 hover:text-gray-600 hover:bg-purple-100 dark:text-white rounded-md dark:hover:bg-gray-700 dark:hover:text-gray-200 focus:outline-none transition ease-in-out duration-150 bg-purple-100 dark:text-white dark:bg-gray-800 focus:outline-none"
                     aria-current="page"
                   >
-                    <svg
-                      aria-hidden="true"
-                      focusable="false"
-                      data-prefix="fas"
-                      data-icon="circle"
-                      className="h-2 w-2 mr-2"
-                      role="img"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                    >
-                      <path
-                        fill="#927fbf"
-                        d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      ></path>
-                    </svg>
+                    <img className="h-2 w-2 mr-2" src={all} />
                     All
                   </button>
                   <button className="w-full mt-1 group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-800 hover:text-gray-600 hover:bg-yellow-100 dark:text-white rounded-md dark:hover:bg-gray-700 dark:hover:text-gray-200 focus:outline-none transition ease-in-out duration-150 ">
-                    <svg
-                      aria-hidden="true"
-                      focusable="false"
-                      data-prefix="fas"
-                      data-icon="circle"
-                      className="h-2 w-2 mr-2"
-                      role="img"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                    >
-                      <path
-                        fill="#f6ad55"
-                        d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      ></path>
-                    </svg>
+                    <img className="h-2 w-2 mr-2" src={video} />
                     Video
                   </button>
                   <button className="w-full mt-1 group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-800 hover:text-gray-600 hover:bg-blue-100 dark:text-white rounded-md dark:hover:bg-gray-700 dark:hover:text-gray-200 focus:outline-none transition ease-in-out duration-150 ">
-                    <svg
-                      aria-hidden="true"
-                      focusable="false"
-                      data-prefix="fas"
-                      data-icon="circle"
-                      className="h-2 w-2 mr-2"
-                      role="img"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                    >
-                      <path
-                        fill="#1da1f2"
-                        d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      ></path>
-                    </svg>
+                    <img className="h-2 w-2 mr-2" src={Text} />
                     Text
                   </button>
 
                   <button className="w-full mt-1 group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-800 hover:text-gray-600 hover:bg-red-100 dark:text-white rounded-md dark:hover:bg-gray-700 dark:hover:text-gray-200 focus:outline-none transition ease-in-out duration-150 ">
-                    <svg
-                      aria-hidden="true"
-                      focusable="false"
-                      data-prefix="fas"
-                      data-icon="circle"
-                      className="h-2 w-2 mr-2"
-                      role="img"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                    >
-                      <path
-                        fill="#ec625f"
-                        d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      ></path>
-                    </svg>
+                    <img className="h-2 w-2 mr-2" src={liked} />
                     Liked
                   </button>
                 </div>
@@ -389,6 +356,178 @@ function MySpace({ spaceId, spaceName }) {
                   </a>
                 </div>
               </nav>
+            </div>
+
+            <div className="pb-20 my-10 mx-4 col-span-12 md:col-span-8 2xl:col-span-9 overflow-auto">
+              <div className="flex my-3 2xl:w-3/4 2xl:mx-auto px-4 sm:px-6 justify-end"></div>
+              <div>
+                <div className="collapsible mb-4 hover:bg-purple-50 dark:bg-gray-800 dark:hover:bg-gray-700 transition ease-in-out duration-150 rounded-lg dark:border-gray-800 2xl:w-3/4 2xl:mx-auto">
+                  <div className="block focus:outline-none transition duration-150 ease-in-out hover:cursor-pointer w-full">
+                    <div className="px-4 py-4 sm:px-6">
+                      <div className="items-center">
+                        <div className="flex w-full">
+                          <div className="relative">
+                            <span className="px-5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-600 text-left">
+                              Text
+                            </span>
+                          </div>
+                          <div className="flex mt-2 ml-auto leading-5 sm:mt-0">
+                            <button>
+                              <svg
+                                className="w-6 h-6 text-red-600 hover:text-red-400 dark:text-red-400 dark:hover:text-red-600"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                                  clipRule="evenodd"
+                                ></path>
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-base font-medium text-gray-900 text-left">
+                        <div>
+                          <div className="mt-4 text-gray-800 dark:text-gray-200 font-semibold dark:hover:text-gray-300 focus:outline-none w-full items-center">
+                            <div className="mb-2">
+                              <div className="star-ratings flex">
+                                <svg
+                                  viewBox="0 0 51 48"
+                                  className="widget-svg"
+                                  style={{
+                                    width: "24px",
+                                    height: "24px",
+                                    transition: "transform 0.2s ease-in-out 0s",
+                                  }}
+                                >
+                                  <path
+                                    className="star"
+                                    d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"
+                                    style={{
+                                      fill: "rgb(255, 182, 33)",
+                                      transition: "fill 0.2s ease-in-out 0s",
+                                    }}
+                                  ></path>
+                                </svg>
+                                <svg
+                                  viewBox="0 0 51 48"
+                                  className="widget-svg"
+                                  style={{
+                                    width: "24px",
+                                    height: "24px",
+                                    transition: "transform 0.2s ease-in-out 0s",
+                                  }}
+                                >
+                                  <path
+                                    className="star"
+                                    d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"
+                                    style={{
+                                      fill: "rgb(255, 182, 33)",
+                                      transition: "fill 0.2s ease-in-out 0s",
+                                    }}
+                                  ></path>
+                                </svg>
+                                <svg
+                                  viewBox="0 0 51 48"
+                                  className="widget-svg"
+                                  style={{
+                                    width: "24px",
+                                    height: "24px",
+                                    transition: "transform 0.2s ease-in-out 0s",
+                                  }}
+                                >
+                                  <path
+                                    className="star"
+                                    d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"
+                                    style={{
+                                      fill: "rgb(255, 182, 33)",
+                                      transition: "fill 0.2s ease-in-out 0s",
+                                    }}
+                                  ></path>
+                                </svg>
+                                <svg
+                                  viewBox="0 0 51 48"
+                                  className="widget-svg"
+                                  style={{
+                                    width: "24px",
+                                    height: "24px",
+                                    transition: "transform 0.2s ease-in-out 0s",
+                                  }}
+                                >
+                                  <path
+                                    className="star"
+                                    d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"
+                                    style={{
+                                      fill: "rgb(255, 182, 33)",
+                                      transition: "fill 0.2s ease-in-out 0s",
+                                    }}
+                                  ></path>
+                                </svg>
+                                <svg
+                                  viewBox="0 0 51 48"
+                                  className="widget-svg"
+                                  style={{
+                                    width: "24px",
+                                    height: "24px",
+                                    transition: "transform 0.2s ease-in-out 0s",
+                                  }}
+                                >
+                                  <path
+                                    className="star"
+                                    d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"
+                                    style={{
+                                      fill: "rgb(255, 182, 33)",
+                                      transition: "fill 0.2s ease-in-out 0s",
+                                    }}
+                                  ></path>
+                                </svg>
+                              </div>
+                            </div>
+                            <div className="text-sm font-normal text-left cursor-pointer">
+                              <p>h</p>
+                            </div>
+                            <div className="mt-4 grid grid-cols-4 gap-4">
+                              <div className="col-span-1 cursor-pointer">
+                                <div>
+                                  <img
+                                    loading="lazy"
+                                    src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F83ece513-704e-4ff2-b48a-f887c62974f3%2Fattached?alt=media&amp;token=2a41f1df-4b98-4381-ab98-166c93f11fa8&amp;hasOriginal=true"
+                                    className="rounded-lg hover:opacity-75"
+                                    alt="thumbnail1"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="grid md:grid-cols-2 gap-x-4 gap-y-1 mt-4">
+                              <div className="ml-0 text-sm text-left">
+                                <p className="text-gray-400 font-semibold dark:text-gray-300 capitalize">
+                                  Name
+                                </p>
+                                <div className="flex">
+                                  <p className="my-auto break-words font-medium text-gray-600 dark:text-gray-200">
+                                    h
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="ml-0 text-sm text-left">
+                                <p className="text-gray-400 font-semibold dark:text-gray-300 capitalize">
+                                  Submitted at
+                                </p>
+                                <p className="break-words font-m edium text-gray-600 dark:text-gray-200">
+                                  Aug 27, 2024, 6:25:33 PM
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
