@@ -326,7 +326,11 @@ function MySpace() {
                     Inbox
                   </h1>
                   <button
-                    className="w-full mt-1 group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-800 hover:text-gray-600 hover:bg-purple-100 dark:text-white rounded-md dark:hover:bg-gray-700 dark:hover:text-gray-200 focus:outline-none transition ease-in-out duration-150 bg-purple-100 dark:text-white dark:bg-gray-800 focus:outline-none"
+                    className={`w-full mt-1 group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-800 hover:text-gray-600 hover:bg-purple-100 dark:text-white rounded-md dark:hover:bg-gray-700 dark:hover:text-gray-200 focus:outline-none transition ease-in-out duration-150 ${
+                      filter === "all"
+                        ? "bg-purple-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                        : ""
+                    }`}
                     aria-current="page"
                     onClick={() => {
                       setFilter("all");
@@ -336,7 +340,11 @@ function MySpace() {
                     All
                   </button>
                   <button
-                    className="w-full mt-1 group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-800 hover:text-gray-600 hover:bg-yellow-100 dark:text-white rounded-md dark:hover:bg-gray-700 dark:hover:text-gray-200 focus:outline-none transition ease-in-out duration-150"
+                    className={`w-full mt-1 group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-800 hover:text-gray-600 hover:bg-purple-100 dark:text-white rounded-md dark:hover:bg-gray-700 dark:hover:text-gray-200 focus:outline-none transition ease-in-out duration-150 ${
+                      filter === "video"
+                        ? "bg-purple-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                        : ""
+                    }`}
                     onClick={() => {
                       setFilter("video");
                     }}
@@ -345,7 +353,11 @@ function MySpace() {
                     Video
                   </button>
                   <button
-                    className="w-full mt-1 group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-800 hover:text-gray-600 hover:bg-blue-100 dark:text-white rounded-md dark:hover:bg-gray-700 dark:hover:text-gray-200 focus:outline-none transition ease-in-out duration-150 "
+                    className={`w-full mt-1 group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-800 hover:text-gray-600 hover:bg-purple-100 dark:text-white rounded-md dark:hover:bg-gray-700 dark:hover:text-gray-200 focus:outline-none transition ease-in-out duration-150 ${
+                      filter === "text"
+                        ? "bg-purple-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                        : ""
+                    }`}
                     onClick={() => {
                       setFilter("text");
                     }}
@@ -355,7 +367,11 @@ function MySpace() {
                   </button>
 
                   <button
-                    className="w-full mt-1 group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-800 hover:text-gray-600 hover:bg-red-100 dark:text-white rounded-md dark:hover:bg-gray-700 dark:hover:text-gray-200 focus:outline-none transition ease-in-out duration-150 "
+                    className={`w-full mt-1 group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-800 hover:text-gray-600 hover:bg-purple-100 dark:text-white rounded-md dark:hover:bg-gray-700 dark:hover:text-gray-200 focus:outline-none transition ease-in-out duration-150 ${
+                      filter === "liked"
+                        ? "bg-purple-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                        : ""
+                    }`}
                     onClick={() => {
                       setFilter("liked");
                     }}
