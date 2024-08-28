@@ -60,7 +60,14 @@ function TextReviewForm({ space, setSelectText }) {
     formData.append("text", message);
     formData.append("rating", rating);
     formData.append("spaceId", space._id);
-    formData.append("image", pfpPic);
+    if (pfpPic === user) {
+      const response = await fetch(pfpPic);
+      const blob = await response.blob();
+      const file = new File([blob], "defaultImg.png", { type: blob.type });
+      formData.append("image", file);
+    } else {
+      formData.append("image", pfpPic);
+    }
     formData.append("type", "text");
 
     try {
