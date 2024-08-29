@@ -8,7 +8,6 @@ import "./App.css";
 import Header from "./components/Header";
 import LoHeader from "./components/LoHeader";
 import Footer from "./components/Footer";
-import Home from "./pages/Home";
 import Features from "./pages/Features";
 import Integrations from "./pages/Integrations";
 import AOS from "aos";
@@ -95,13 +94,14 @@ function App() {
       {!(
         location.pathname == "/newspace" ||
         location.pathname.startsWith("/submitreview") ||
-        location.pathname == "/loading"
+        location.pathname == "/loading" ||
+        location.pathname.startsWith("/embed")
       ) && (
         <div className="flex flex-col min-h-screen overflow-hidden">
           {auth ? <LoHeader /> : <Header />}
           <main className="flex-grow">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<HomePage />} />
               <Route path="/features" element={<Features />} />
               <Route path="/integrations" element={<Integrations />} />
 
