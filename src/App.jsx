@@ -101,7 +101,7 @@ function App() {
           {auth ? <LoHeader /> : <Header />}
           <main className="flex-grow">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<HomePage />} />
               <Route path="/features" element={<Features />} />
               <Route path="/integrations" element={<Integrations />} />
 
