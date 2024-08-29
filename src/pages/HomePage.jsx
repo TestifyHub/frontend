@@ -16,9 +16,15 @@ function HomePage() {
       <section className="bg-white dark:bg-gray-900">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="relative pt-32 pb-10 md:pt-40 md:pb-20">
-            <div className="max-w-4xl mx-auto text-center pb-12 md:pb-16" >
-              <h1 className="h1 mb-4 aos-init aos-animate" data-aos="fade-up"> Get testimonials from your customers with ease</h1>
-              <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 aos-init aos-animate" data-aos="fade-up">
+            <div className="max-w-4xl mx-auto text-center pb-12 md:pb-16">
+              <h1 className="h1 mb-4" data-aos="fade-up">
+                {" "}
+                Get testimonials from your customers with ease
+              </h1>
+              <p
+                className="text-xl text-gray-600 dark:text-gray-400 mb-8"
+                data-aos="fade-up"
+              >
                 Collecting testimonials is hard, we get it! So we built
                 Testimonial. In minutes, you can collect text and video
                 testimonials from your customers with no need for a developer or
@@ -145,7 +151,22 @@ function HomePage() {
       <section className="bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
           <div className="py-12 dark:border-t dark:border-gray-800">
-          <div className="max-w-4xl mx-auto text-center pb-6"><h1 className="h1 mb-4 aos-init aos-animate" data-aos="fade-up">Add testimonials to your website with no coding!</h1><p className="max-w-4xl mx-auto text-xl text-gray-600 dark:text-gray-400 mb-8 aos-init aos-animate" data-aos="fade-up">Copy and paste our HTML code to add the Wall Of Love (<a className="underline" href="/wall-of-love">👉 full version</a>) to your website. We support any no-code platform (Webflow, WordPress, you name it!)</p></div>
+            <div className="max-w-4xl mx-auto text-center pb-6">
+              <h1 className="h1 mb-4 aos-init aos-animate" data-aos="fade-up">
+                Add testimonials to your website with no coding!
+              </h1>
+              <p
+                className="max-w-4xl mx-auto text-xl text-gray-600 dark:text-gray-400 mb-8 aos-init aos-animate"
+                data-aos="fade-up"
+              >
+                Copy and paste our HTML code to add the Wall Of Love (
+                <a className="underline" href="/wall-of-love">
+                  👉 full version
+                </a>
+                ) to your website. We support any no-code platform (Webflow,
+                WordPress, you name it!)
+              </p>
+            </div>
           </div>
         </div>
       </section>
