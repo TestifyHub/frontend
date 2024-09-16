@@ -29,6 +29,7 @@ function NewSpace() {
     color: "#5D5DFF",
   });
 
+  
   useEffect(() => {
     const fetchUserId = async () => {
       try {
