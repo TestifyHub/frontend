@@ -31,6 +31,7 @@ function Dashboard() {
       } catch (error) {
         console.error("Error verifying token:", error);
       }
+      setLoading(false);
     };
 
     const fetchSpaces = async (userId) => {
