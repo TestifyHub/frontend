@@ -26,6 +26,7 @@ function App() {
   const navigate = useNavigate();
   const [auth, setAuth] = useState(false);
   const location = useLocation();
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     AOS.init({

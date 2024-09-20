@@ -1,4 +1,4 @@
-import React from "react";
+import React, {  useState } from "react";
 import img1 from "/homepage/chillipeper.png";
 import img2 from "/homepage/chime-logo.svg";
 import img3 from "/homepage/earnest-capital.aa8f8027.svg";
@@ -11,6 +11,44 @@ import img9 from "/homepage/yoto.png";
 import img10 from "/homepage/yoast.png";
 
 function HomePage() {
+  const [copySuccess,setCopySuccess]=useState(false);
+  const codeSnippet = `<iframe src="http://localhost:5000/embed/66e54c672d9a36ec880d3912" frameborder="0" width="100%" height="400px"></iframe>`;
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(codeSnippet).then(() => {
+      setCopySuccess('Copied!');
+      setTimeout(() => setCopySuccess(''), 2000); // Clear the success message after 2 seconds
+    }, (err) => {
+      setCopySuccess('Failed to copy!');
+    });
+  };
+
+  const containerStyle = {
+    backgroundColor: '#1e1e1e',
+    padding: '20px',
+    borderRadius: '8px',
+    width: 'fit-content',
+    maxWidth: '100%',
+    margin: '20px 0',
+    position: 'relative'
+  };
+
+  const codeBoxStyle = {
+    color: '#ffffff',
+    fontFamily: '"Courier New", Courier, monospace',
+    fontSize: '14px',
+    overflowX: 'auto',
+    padding: '10px',
+    whiteSpace: 'pre-wrap'
+  };
+
+
+  const feedbackStyle = {
+    color: '#4CAF50',
+    fontSize: '12px',
+    marginLeft: '10px'
+  };
+
   return (
     <main className="flex-grow">
       <section className="bg-white dark:bg-gray-900">
@@ -184,32 +222,17 @@ function HomePage() {
                 <div className="mt-2 max-w-xl text-sm text-gray-100">
                   <p>Embed the wall of love to your website in 1 minute</p>
                 </div>
-                <div className="my-5 rounded-lg bg-gray-900 border border-gray-700 text-base">
-                  <pre
-                    className="text-sm"
-                    style={{
-                      color: "rgb(197, 200, 198)",
-                      textShadow: "rgba(0, 0, 0, 0.3) 0px 1px",
-                      fontFamily:
-                        'Inconsolata, Monaco, Consolas, "Courier New", Courier, monospace',
-                      direction: "ltr",
-                      textAlign: "left",
-                      whiteSpace: "pre",
-                      wordSpacing: "normal",
-                      wordBreak: "normal",
-                      lineHeight: 1.5,
-                      tabSize: 4,
-                      hyphens: "none",
-                      padding: "1em",
-                      margin: "0.5em 0px",
-                      overflow: "auto",
-                      borderRadius: "0.3em",
-                      background: "rgb(29, 31, 33)",
-                    }}
-                  ></pre>
-                </div>
+                <div style={containerStyle}>
+      <div className="code-header">
+
+        {copySuccess && <span style={feedbackStyle}>{copySuccess}</span>}
+      </div>
+      <pre style={codeBoxStyle}>
+        <code>{codeSnippet}</code>
+      </pre>
+    </div>
                 <div className="mt-5 flex">
-                  <button className="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm w-40">
+                  <button className="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm w-40" onClick={copyToClipboard}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5 my-auto mr-1"
@@ -224,6 +247,7 @@ function HomePage() {
                         d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
                       ></path>
                     </svg>
+
                     Copy the code
                   </button>
                 </div>

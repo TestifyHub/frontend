@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import logo from "../assets/logo.svg";
 import { useNavigate } from "react-router-dom";
+import userLogo from "/user.png";
 
 function LoHeader() {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ function LoHeader() {
                       <img
                         loading="lazy"
                         className="rounded-full h-10 w-10"
-                        src="https://ui-avatars.com/api/?background=202938&color=fff&size=256&font-size=0.5&bold=true&name=PP"
+                        src={userLogo}
                         alt="user avatar"
                       />
                     </button>
@@ -111,7 +112,7 @@ function LoHeader() {
                       <img
                         loading="lazy"
                         className="rounded-full h-10 w-10"
-                        src="https://ui-avatars.com/api/?background=202938&color=fff&size=256&font-size=0.5&bold=true&name=PP"
+                        src={userLogo}
                         alt="user avatar"
                       />
                     </button>

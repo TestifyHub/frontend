@@ -23,11 +23,60 @@ function MySpace() {
   const [isHighlightTooltipVisible, setIsHighlightTooltipVisible] =
     useState(false);
   const [loading, setLoading] = useState(false);
+  const [copySuccess,setCopySuccess]=useState(false);
+  const codeSnippet = `<iframe src="http://localhost:5000/embed/${id}" frameborder="0" width="100%" height="400px"></iframe>`;
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(codeSnippet).then(() => {
+      setCopySuccess('Copied!');
+      setTimeout(() => setCopySuccess(''), 2000); // Clear the success message after 2 seconds
+    }, (err) => {
+      setCopySuccess('Failed to copy!');
+    });
+  };
 
   const toggleOptions = () => setIsOptionsOpen(!isOptionsOpen);
   const toggleTooltip = () => setIsTooltipVisible(!isTooltipVisible);
   const toggleHighlightTooltip = () =>
     setIsHighlightTooltipVisible(!isHighlightTooltipVisible);
+
+  const containerStyle = {
+    backgroundColor: '#1e1e1e',
+    padding: '20px',
+    borderRadius: '8px',
+    width: 'fit-content',
+    maxWidth: '100%',
+    margin: '20px 0',
+    position: 'relative'
+  };
+
+  const codeBoxStyle = {
+    color: '#ffffff',
+    fontFamily: '"Courier New", Courier, monospace',
+    fontSize: '14px',
+    overflowX: 'auto',
+    padding: '10px',
+    whiteSpace: 'pre-wrap'
+  };
+
+  const buttonStyle = {
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    border: 'none',
+    padding: '8px 12px',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '12px',
+    marginBottom: '10px'
+  };
+
+  const feedbackStyle = {
+    color: '#4CAF50',
+    fontSize: '12px',
+    marginLeft: '10px'
+  };
+
+  
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -247,36 +296,18 @@ function MySpace() {
                           <div className="w-full mx-auto px-4 sm:px-6 relative">
                             <div className="py-6">
                               <div className="w-full mx-auto text-center text-gray-800">
-                                <h3 className="h3 mb-4">
+                                <h3 className="h3 mb-4">  
                                   Embed a Wall of Love
                                 </h3>
                               </div>
-                              <div className="max-w-4xl mx-auto">
-                                <p className="text-base font-medium w-full text-gray-800 text-center mb-4">
-                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full font-medium bg-purple-100 text-purple-800 mr-2">
-                                    Step 1
-                                  </span>
-                                  Choose a layout
-                                </p>
-
-                                <ul className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-                                  <li className="col-span-1 flex flex-col text-center bg-white rounded-lg border-gray-300 border  hover:shadow-lg divide-y divide-gray-200 cursor-pointer">
+                              <div className="max-w-4xl mx-auto flex ">
+                             
+                                <ul className="grid grid-cols-2 gap-6 sm:grid-cols-2">
+                                
+                                  <li className="col-span-1 flex flex-col text-center bg-white rounded-lg border-gray-300 border over:shadow-lg divide-y divide-gray-200 cursor-pointer">
                                     <div className="flex-1 flex flex-col justify-between">
                                       <img
-                                        className="w-full flex-shrink-0 border-none my-auto rounded-lg"
-                                        src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/assets%2Fanimated-demo.gif?alt=media&amp;token=08b0e0d6-5290-4441-a309-942e074c7b77"
-                                        alt="auto scrolling masonry grid"
-                                      />
-
-                                      <h3 className="my-3 text-gray-900 text-base font-semibold">
-                                        Masonry - animated
-                                      </h3>
-                                    </div>
-                                  </li>
-                                  <li className="col-span-1 flex flex-col text-center bg-white rounded-lg border-gray-300 border  hover:shadow-lg divide-y divide-gray-200 cursor-pointer">
-                                    <div className="flex-1 flex flex-col justify-between">
-                                      <img
-                                        className="w-full flex-shrink-0 border-none my-auto rounded-lg"
+                                        className="w-full flex-shrink-0 border-none my-auto rounded-lg "
                                         src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/assets%2Ffixed-masonry-grid.png?alt=media&amp;token=c75b8785-344a-4bd8-96dd-79592466d78e"
                                         alt="Fixed masonry grid"
                                       />
@@ -286,31 +317,22 @@ function MySpace() {
                                       </h3>
                                     </div>
                                   </li>
-                                  <li className="col-span-1 flex flex-col text-center bg-white rounded-lg border-gray-300 border  hover:shadow-lg divide-y divide-gray-200 cursor-pointer">
-                                    <div className="flex-1 flex flex-col justify-between">
-                                      <img
-                                        className="w-full flex-shrink-0 border-none my-auto rounded-lg"
-                                        src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/assets%2Fcarousel-animated.gif?alt=media&amp;token=7a42bb1a-0b98-45e9-acbf-37f8a9f36a4e"
-                                        alt="Fixed masonry grid"
-                                      />
-                                      <h3 className="my-3 text-gray-900 text-base font-semibold">
-                                        Carousel slider
-                                      </h3>
-                                    </div>
-                                  </li>
+               <li>                   <div style={containerStyle}>
+      <div className="code-header">
+        <button style={buttonStyle} onClick={copyToClipboard}>Copy</button>
+        {copySuccess && <span style={feedbackStyle}>{copySuccess}</span>}
+      </div>
+      <pre style={codeBoxStyle}>
+        <code>{codeSnippet}</code>
+      </pre>
+    </div>
+                  </li>             
                                 </ul>
+             
+                                
                               </div>
-                              <p className="text-base w-full text-gray-600 text-center mt-4">
-                                Check out our{" "}
-                                <a
-                                  className="underline"
-                                  href="https://help.testimonial.to/en/articles/6223121-embed-a-wall-of-love"
-                                  target="_blank"
-                                >
-                                  Wall of Love embed guide
-                                </a>{" "}
-                                for more help.
-                              </p>
+                              
+                            
                             </div>
                           </div>
                         </section>
