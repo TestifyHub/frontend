@@ -16,7 +16,14 @@ function SuccessComponent({ spaceId, spaceName }) {
               <p className="text-sm font-medium text-gray-600 break-words mt-2">
                 Here is the link for your customers:
                 <div>
-                  <p className="text-sm font-medium text-purple-600 break-words cursor-pointer">{`http://localhost:5173/submitreview/${spaceId}`}</p>
+                  <a
+                    className="text-sm font-medium text-purple-600 break-words cursor-pointer"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`http://localhost:5173/submitreview/${spaceId}`}
+                  >
+                    {`http://localhost:5173/submitreview/${spaceId}`}
+                  </a>
                 </div>
               </p>
             </div>

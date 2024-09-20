@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import img1 from "/homepage/chillipeper.png";
 import img2 from "/homepage/chime-logo.svg";
 import img3 from "/homepage/earnest-capital.aa8f8027.svg";
@@ -11,42 +11,44 @@ import img9 from "/homepage/yoto.png";
 import img10 from "/homepage/yoast.png";
 
 function HomePage() {
-  const [copySuccess,setCopySuccess]=useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
   const codeSnippet = `<iframe src="http://localhost:5000/embed/66e54c672d9a36ec880d3912" frameborder="0" width="100%" height="400px"></iframe>`;
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(codeSnippet).then(() => {
-      setCopySuccess('Copied!');
-      setTimeout(() => setCopySuccess(''), 2000); // Clear the success message after 2 seconds
-    }, (err) => {
-      setCopySuccess('Failed to copy!');
-    });
+    navigator.clipboard.writeText(codeSnippet).then(
+      () => {
+        setCopySuccess("Copied!");
+        setTimeout(() => setCopySuccess(""), 2000); // Clear the success message after 2 seconds
+      },
+      (err) => {
+        setCopySuccess("Failed to copy!");
+      }
+    );
   };
 
   const containerStyle = {
-    backgroundColor: '#1e1e1e',
-    padding: '20px',
-    borderRadius: '8px',
-    width: 'fit-content',
-    maxWidth: '100%',
-    margin: '20px 0',
-    position: 'relative'
+    backgroundColor: "#1e1e1e",
+    padding: "20px",
+    borderRadius: "8px",
+    width: "fit-content",
+    maxWidth: "100%",
+    margin: "20px 0",
+    position: "relative",
   };
 
   const codeBoxStyle = {
-    color: '#ffffff',
+    color: "#ffffff",
     fontFamily: '"Courier New", Courier, monospace',
-    fontSize: '14px',
-    overflowX: 'auto',
-    padding: '10px',
-    whiteSpace: 'pre-wrap'
+    fontSize: "14px",
+    overflowX: "auto",
+    padding: "10px",
+    whiteSpace: "pre-wrap",
   };
 
-
   const feedbackStyle = {
-    color: '#4CAF50',
-    fontSize: '12px',
-    marginLeft: '10px'
+    color: "#4CAF50",
+    fontSize: "12px",
+    marginLeft: "10px",
   };
 
   return (
@@ -77,93 +79,6 @@ function HomePage() {
                     >
                       Try FREE now
                     </a>
-                  </div>
-                </div>
-              </div>
-              <div className="w-full h-[40vh] flex flex-col items-center justify-center">
-                <p className="text-center text-xl font-bold uppercase text-gray-600 dark:text-gray-400 tracking-wide mb-10">
-                  Trusted customers
-                </p>
-                <div className="grid grid-cols-2 gap-4 md:gap-8 md:grid-cols-5">
-                  <div className="col-span-1 flex justify-center">
-                    <img
-                      loading="lazy"
-                      className="h-4 lg:h-10 my-auto"
-                      src={img1}
-                      alt="chillipeper"
-                    />
-                  </div>
-                  <div className="col-span-1 flex justify-center">
-                    <img
-                      loading="lazy"
-                      className="h-4 lg:h-10 my-auto"
-                      src={img2}
-                      alt="chillipeper"
-                    />
-                  </div>
-                  <div className="col-span-1 flex justify-center">
-                    <img
-                      loading="lazy"
-                      className="h-4 lg:h-10 my-auto"
-                      src={img3}
-                      alt="chillipeper"
-                    />
-                  </div>
-                  <div className="col-span-1 flex justify-center">
-                    <img
-                      loading="lazy"
-                      className="h-4 lg:h-10 my-auto"
-                      src={img4}
-                      alt="chillipeper"
-                    />
-                  </div>
-                  <div className="col-span-1 flex justify-center">
-                    <img
-                      loading="lazy"
-                      className="h-4 lg:h-10 my-auto"
-                      src={img5}
-                      alt="chillipeper"
-                    />
-                  </div>
-                  <div className="col-span-1 flex justify-center">
-                    <img
-                      loading="lazy"
-                      className="h-4 lg:h-10 my-auto"
-                      src={img6}
-                      alt="chillipeper"
-                    />
-                  </div>
-                  <div className="col-span-1 flex justify-center">
-                    <img
-                      loading="lazy"
-                      className="h-4 lg:h-10 my-auto"
-                      src={img7}
-                      alt="chillipeper"
-                    />
-                  </div>
-                  <div className="col-span-1 flex justify-center">
-                    <img
-                      loading="lazy"
-                      className="h-4 lg:h-10 my-auto"
-                      src={img8}
-                      alt="chillipeper"
-                    />
-                  </div>
-                  <div className="col-span-1 flex justify-center">
-                    <img
-                      loading="lazy"
-                      className="h-4 lg:h-10 my-auto"
-                      src={img9}
-                      alt="chillipeper"
-                    />
-                  </div>
-                  <div className="col-span-1 flex justify-center">
-                    <img
-                      loading="lazy"
-                      className="h-4 lg:h-10 my-auto"
-                      src={img10}
-                      alt="chillipeper"
-                    />
                   </div>
                 </div>
               </div>
@@ -223,16 +138,20 @@ function HomePage() {
                   <p>Embed the wall of love to your website in 1 minute</p>
                 </div>
                 <div style={containerStyle}>
-      <div className="code-header">
-
-        {copySuccess && <span style={feedbackStyle}>{copySuccess}</span>}
-      </div>
-      <pre style={codeBoxStyle}>
-        <code>{codeSnippet}</code>
-      </pre>
-    </div>
+                  <div className="code-header">
+                    {copySuccess && (
+                      <span style={feedbackStyle}>{copySuccess}</span>
+                    )}
+                  </div>
+                  <pre style={codeBoxStyle}>
+                    <code>{codeSnippet}</code>
+                  </pre>
+                </div>
                 <div className="mt-5 flex">
-                  <button className="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm w-40" onClick={copyToClipboard}>
+                  <button
+                    className="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm w-40"
+                    onClick={copyToClipboard}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5 my-auto mr-1"
@@ -247,7 +166,6 @@ function HomePage() {
                         d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
                       ></path>
                     </svg>
-
                     Copy the code
                   </button>
                 </div>
